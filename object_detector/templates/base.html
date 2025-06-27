@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YOLOv8 Object Detector</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom Carousel Styles */
+      .demo-carousel {
+        margin: 40px 0;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .demo-carousel .carousel-item img {
+        min-height: 500px;
+
+        object-fit: cover;
+      }
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        padding: 15px;
+      }
+      .carousel-control-prev,
+      .carousel-control-next {
+        width: 5%;
+      }
+    </style>
+  </head>
+  <body class="">
+    <nav class="nav-foot navbar navbar-expand-lg text-white">
+      <div class="container navs">
+        <img
+          src="{{ url_for('static', filename='assets/images/logos/Firasat_logo.png') }}"
+          class="w-16"
+          alt="firasat"
+        />
+        <button
+          class="navbar-toggler text-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon text-light"></span>
+        </button>
+        <div class="collapse navbar-collapse text-light" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-light" href="{{ url_for('home') }}"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                href="{{ url_for('image_detector') }}"
+                >Image Detector</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                href="{{ url_for('video_detector') }}"
+                >Video Detector</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="{{ url_for('webcam') }}"
+                >Webcam Live</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link text-light"
+                href="https://wa.me/923122646268"
+                target="_blank"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">{% block content %}{% endblock %}</div>
+
+    <footer class="nav-foot text-white text-center py-3 mt-4">
+      <div class="container">
+        <img
+          src="{{ url_for('static', filename='assets/images/logos/Firasat_logo.png') }}"
+          class="w-16"
+          alt="firasat"
+        />
+        <p>
+          FIRASATAI a product by DigitalNeurons (Students of Computer Science
+          NUML Karachi)
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

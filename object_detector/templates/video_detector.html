@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container hero">
+  <h2 class="mb-4">Video Object Detection</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="mb-4" id="video-form">
+    <div class="mb-3">
+      <label for="file" class="form-label">Upload a Video (MP4, AVI, MOV)</label>
+      <input
+        class="form-control"
+        type="file"
+        name="file"
+        id="file"
+        accept=".mp4,.avi,.mov"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary" id="detect-button">
+      <span id="button-text">Detect Objects</span>
+      <span id="loading-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+    </button>
+  </form>
+
+  <!-- Processing Alert -->
+  <div id="processing-alert" class="alert alert-info d-none">
+    <div class="d-flex align-items-center">
+      <div class="spinner-border spinner-border-sm me-2" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div>
+        <strong id="progress-message">Preparing video processing...</strong>
+        <div id="time-estimate" class="small">Estimating time remaining...</div>
+      </div>
+    </div>
+    <div class="progress mt-2">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" style="width: 0%"></div>
+    </div>
+    <div class="mt-2 small" id="frame-counter">0 frames processed</div>
+  </div>
+
+  {% if original_video and processed_video %}
+  <div class="alert alert-success">
+    <i class="bi bi-check-circle-fill"></i> Successfully processed {{ frame_count }} frames
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 d-flex align-items-center">
+      <div class="d-grid gap-2">
+        <a href="{{ url_for('download_video') }}" class="btn btn-success mb-2">
+          <i class="bi bi-download"></i> Download Processed Video
+        </a>
+        <a href="{{ url_for('download_csv') }}" class="btn btn-info">
+          <i class="bi bi-file-earmark-spreadsheet"></i> Download Object Data (CSV)
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Object Counts</h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Object</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in object_data %}
+          <tr>
+            <td>{{ item.Object }}</td>
+            <td>{{ item.Count }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('video-form');
+  const button = document.getElementById('detect-button');
+  const buttonText = document.getElementById('button-text');
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const processingAlert = document.getElementById('processing-alert');
+  const progressBar = document.getElementById('progress-bar');
+  const progressMessage = document.getElementById('progress-message');
+  const timeEstimate = document.getElementById('time-estimate');
+  const frameCounter = document.getElementById('frame-counter');
+
+  form.addEventListener('submit', function() {
+    // Disable the button and show loading state
+    button.disabled = true;
+    buttonText.textContent = 'Processing...';
+    loadingSpinner.classList.remove('d-none');
+    
+    // Show processing alert
+    processingAlert.classList.remove('d-none');
+    
+    // Simulate progress updates (in a real app, you would use server-sent events or websockets)
+    let progress = 0;
+    let framesProcessed = 0;
+    let startTime = Date.now();
+    
+    const interval = setInterval(() => {
+      progress += 1;
+      framesProcessed += Math.floor(Math.random() * 5) + 1; // Random frame increment for demo
+      
+      // Update progress bar
+      progressBar.style.width = progress + '%';
+      
+      // Update messages
+      progressMessage.textContent = getProgressMessage(progress);
+      frameCounter.textContent = `${framesProcessed} frames processed`;
+      
+      // Update time estimate
+      if (progress > 5) { // Wait a few ticks before estimating
+        const elapsed = (Date.now() - startTime) / 1000; // in seconds
+        const remaining = Math.round((elapsed / progress) * (100 - progress));
+        timeEstimate.textContent = `Estimated time remaining: ${remaining} seconds`;
+      }
+      
+      if (progress >= 100) {
+        clearInterval(interval);
+        progressMessage.textContent = "Finalizing results...";
+        timeEstimate.textContent = "Almost done!";
+      }
+    }, 800); // Update every 800ms for demo
+  });
+
+  function getProgressMessage(progress) {
+    if (progress < 20) return "Analyzing video metadata...";
+    if (progress < 40) return "Processing early frames...";
+    if (progress < 60) return "Detecting objects in video...";
+    if (progress < 80) return "Processing remaining frames...";
+    return "Finalizing video output...";
+  }
+});
+</script>
+
+<style>
+  .spinner-border {
+    vertical-align: middle;
+  }
+  #progress-bar {
+    height: 5px;
+  }
+  #processing-alert {
+    transition: all 0.3s ease;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,95 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container hero py-4">
+    <h2 class="mb-4 text-center">Webcam Live Detection</h2>
+    
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title">Realtime Object Detection with YOLOv8</h5>
+            <p class="card-text">Click "Start Video" to activate your webcam and detect objects live using YOLOv8.</p>
+
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-info">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="text-center mb-3">
+                <img id="video-frame" src="" width="640" height="360" class="img-fluid rounded border">
+            </div>
+
+            <div class="text-center">
+                <button id="start-btn" class="btn btn-success me-2" onclick="startVideo()">Start Video</button>
+                <button id="stop-btn" class="btn btn-danger me-2" onclick="stopVideo()" >Stop Video</button>
+<!--
+                <button id="download-btn" class="btn btn-primary me-2" onclick="downloadVideo()" >
+                    <i class="bi bi-download"></i> Download Processed Video
+                </button>                
+-->
+
+                        <a href="{{ url_for('download_camvideo') }}" class="btn btn-success mb-2">
+          <i class="bi bi-download"></i> Download Processed Video
+        </a>
+
+
+                <button id="download-csv-btn" class="btn btn-info" onclick="downloadCSV()" >
+                    <i class="bi bi-file-earmark-spreadsheet"></i> Download Detection Data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateButtons() {
+        fetch('/webcam-status')
+            .then(response => response.json())
+            .then(data => {
+                const startBtn = document.getElementById('start-btn');
+                const stopBtn = document.getElementById('stop-btn');
+                const downloadBtn = document.getElementById('download-btn');
+                const downloadCsvBtn = document.getElementById('download-csv-btn');
+
+                startBtn.disabled = data.webcam_active;
+                stopBtn.disabled = !data.webcam_active;
+                downloadBtn.disabled = !data.download_available;
+                downloadCsvBtn.disabled = !data.download_available;
+            });
+    }
+
+    function startVideo() {
+        document.getElementById('video-frame').src = "/start-webcam";
+        document.getElementById('start-btn').disabled = true;
+        document.getElementById('stop-btn').disabled = false;
+    }
+
+    function stopVideo() {
+        fetch('/stop-webcam')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('video-frame').src = "";
+                    updateButtons();
+                }
+            });
+    }
+
+    function downloadVideo() {
+        window.location.href = "/download-video";
+    }
+
+    function downloadCSV() {
+        window.location.href = "/download-camvideo-csv";
+    }
+
+    // Check status every second
+    setInterval(updateButtons, 1000);
+</script>
+{% endblock %}
