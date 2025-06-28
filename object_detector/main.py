@@ -14,7 +14,7 @@ from flask import send_from_directory
 
 # ====================== [FLASK CONFIGURATION] ======================
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+app.secret_key = 'abc123'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 
@@ -23,6 +23,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Load YOLO model once
 model = YOLO("yolov8n.pt")
+# model = YOLO("yolov5s.pt")
 
 # ====================== [ROUTES] ======================
 
