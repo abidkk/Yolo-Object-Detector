@@ -23,8 +23,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Load YOLO model once
 model = YOLO("yolov8n.pt")
-# model = YOLO("yolov5s.pt")
-
+# model = YOLO("yolov5x.pt")
 # ====================== [ROUTES] ======================
 
 @app.route('/')

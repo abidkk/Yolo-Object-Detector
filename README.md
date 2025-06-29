@@ -18,5 +18,11 @@ Yolo Computer Vision Object Detector Project
 - Install packeges from requirements.txt : (pip install -r requirements.txt)
 
 
+
+### clone the model code:
+- git clone https://github.com/abidkk/Yolo-Object-Detector.git
+
+
 ### Download Yolo Model Weights 
 - download here ( https://github.com/ultralytics/yolov5/releases/download/v7.0/yolov5s.pt)
+- Note: paste this weights in root directory
