@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YOLO DASHBOARD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="h-full overflow-hidden bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center md:hidden">
+        <h1 class="text-xl font-bold">YOLO DASHBOARD</h1>
+        <button id="menuBtn" class="text-gray-700 focus:outline-none text-2xl">☰</button>
+    </header>
+
+    <div class="flex h-full">
+
+        <!-- Sidebar -->
+        <aside id="sidebar"
+            class="bg-white w-64 fixed md:static h-full top-0 left-0 z-30 p-5 shadow-md transition-transform transform md:translate-x-0 -translate-x-full md:block">
+            <img src="https://www.digitalneurons.site/images/logo/logo_side_name3.png" alt="digitalneurons"
+                class="py-2">
+            <h2 class="text-2xl font-bold mb-6 hidden md:block text-center pb-4"> Yolo Dashboard</h2>
+            <nav class="space-y-2">
+                <button onclick="showSection('current_insights')"
+                    class="block w-full text-left border-b border-gray-200 bg-gray-00 hover:bg-gray-100  duration-500 cursor-pointer p-2">Current
+                    Insights</button>
+                <button onclick="showSection('updates')"
+                    class="block w-full text-left border-b border-gray-200 bg-gray-00 hover:bg-gray-100  duration-500 cursor-pointer p-2">📢
+                    Announcements</button>
+            </nav>
+        </aside>
+
+        <!-- Overlay for Mobile -->
+        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-30 z-20 hidden md:hidden"></div>
+
+        <!-- Main Content (Scrollable Only) -->
+        <main class="flex-1 md:ml-0 h-full overflow-y-auto p-6 space-y-10">
+
+            <!-- current_insights -->
+            <section id="current_insights" class="content-section relative">
+                <div class="fixed top-12 sm:top-6 right-1">
+                    <div 
+                    class="bg-white text-gray-800 text-center shadow-md px-4 py-2 text-sm rounded-md "
+                    >
+                        <h2 class="flex items-center gap-2"><span><img src="../static/assets/images/icons/alerts_18122653.png" alt="alert" class="w-8 h-8"></span><span>Tracking stopped</span></h2>
+                    </div>
+
+                </div>
+                <div>
+                    <h2 class="text-center p-2 text-3xl font-bold ">Current Insights</h2>
+                    <ul class="flex flex-wrap items-center justify-between gap-x-4">
+                        <li>📅 Date: {{ date }}, {{ day }}</li>
+                        <li></li>
+                        <li>⏰ Time: {{ time }}</li>
+                    </ul>
+                </div>
+
+                <div class="btns text-center  py-2 bg-gray-50 my-5">
+                    <button class="hover:scale-105 duration-500"><img
+                            src="../static/assets/images/icons/recoding_12902982.png" class="w-10 h-10"
+                            alt="start"></button>
+                    <button class=" rounded-sm hover:scale-105 duration-500"> <img
+                            src="../static/assets/images/icons/stop_12751430.png" alt="stop" class="w-10 h-10">
+                    </button>
+                    <button onclick="updateSummary()" class=" rounded-sm text-white hover:scale-105 duration-500 "><img
+                            src="../static/assets/images/icons/refresh_189686.png" alt="load data"
+                            class="w-10 h-10"></button>
+
+                </div>
+
+
+                <!-- Cards -->
+
+
+                <div id="dashboard"
+                    class="counts bg-gray-100 p-2 min-h-64 grid  grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4 my-5 rounded-md">
+
+                    <!-- ID CARD -->
+                    <div
+                        class="with_id h-64 gap-4 bg-gray-50 p-2 rounded-md flex flex-col items-center justify-around gap-2 border border-white  hover:scale-105 hover:bg-white hover:shadow-md duration-500">
+                        <h3 class="text-sm font-bold">ID Cards</h3>
+                        <img src="../static/assets/images/idcard.png" height="80" width="80" alt="idcard">
+                        <h3 class="text-2xl font-bold" id="withID">00</h3>
+                    </div>
+
+                    <!-- NO ID CARD -->
+                    <div
+                        class="withou_id h-64 gap-4 bg-gray-50 p-2 rounded-md flex flex-col items-center justify-around gap-2 border border-white  hover:scale-105 hover:bg-white hover:shadow-md duration-500">
+                        <h3 class="text-sm font-bold">NO ID Cards</h3>
+                        <img src="../static/assets/images/noid.png" height="80" width="80" alt="noID">
+                        <h3 class="text-2xl font-bold" id="withoutID">00</h3>
+                    </div>
+
+
+
+                    <!-- Bike -->
+                    <div
+                        class="bike h-64 gap-4 bg-gray-50 p-2 rounded-md flex flex-col items-center justify-around gap-2 border border-white  hover:scale-105 hover:bg-white hover:shadow-md duration-500">
+                        <h3 class="text-sm font-bold">Bikes</h3>
+                        <img src="../static/assets/images/bike.png" height="80" width="80" alt="bike">
+                        <h3 class="text-2xl font-bold" id="bike">00</h3>
+                    </div>
+
+
+                    <!-- Car -->
+                    <div
+                        class="car h-64 gap-4 bg-gray-50 p-2 rounded-md flex flex-col items-center justify-around gap-2 border border-white  hover:scale-105 hover:bg-white hover:shadow-md duration-500 ">
+                        <h3 class="text-sm font-bold">Cars</h3>
+                        <img src="../static/assets/images/car.png" height="80" width="80" alt="Car">
+                        <h3 class="text-2xl font-bold" id="car">00</h3>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </section>
+            <div>
+                <p>📦 Total Persons: <span id="totalPersons">0</span></p>
+            </div>
+
+
+
+</body>
+</p>
+
+
+</section>
+
+
+<!-- Updates -->
+<section id="updates" class="content-section hidden">
+    <h2 class="text-3xl font-semibold mb-6">Updates</h2>
+    <div class="mb-4 p-4 border rounded-lg bg-white shadow">
+        <h3 class="text-xl font-bold">📌 New Uploade released</h3>
+        <p class="text-gray-700">lorem 3 on Responsive Design is now available!</p>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function toggleLecture(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('hidden');
+    }
+
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => section.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+
+        // For mobile: hide sidebar when selecting a section
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    });
+
+
+
+</script>
+
+<script>
+    document.querySelector(".btns button:nth-child(1)").addEventListener("click", () => {
+        fetch("/start", { method: "POST" })
+            .then(res => res.json())
+            .then(data => alert("📷 Tracking started!"));
+    });
+
+    document.querySelector(".btns button:nth-child(2)").addEventListener("click", () => {
+        fetch("/stop", { method: "POST" })
+            .then(res => res.json())
+            .then(data => alert("🛑 Tracking stopped and CSV saved."));
+    });
+</script>
+
+
+<!-- <script>
+fetch('/summary')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('with_id').textContent = data.person_with_id;
+    document.getElementById('without_id').textContent = data.person_without_id;
+    document.getElementById('total').textContent = data.total_persons;
+  });
+</script> -->
+
+<!-- <script>
+fetch('/summary')
+  .then(response => response.json())
+  .then(data => {
+
+    console.log(data);
+    document.getElementById('withID').textContent = data.Person_with_ID;
+    document.getElementById('withoutID').textContent = data.Person_without_ID;
+    document.getElementById('totalPersons').textContent = data.Total_Unique_Persons;
+  })
+
+  
+  .catch(error => console.error('Error fetching summary:', error));
+</script> -->
+
+
+<!-- <script>
+fetch('/summary')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    document.getElementById('withID').textContent = data.Person_with_ID;
+    document.getElementById('withoutID').textContent = data.Person_without_ID;
+    document.getElementById('totalPersons').textContent = data.Total_Unique_Persons;
+  })
+  .catch(error => console.error('Error fetching summary:', error));
+</script>
+ -->
+
+
+<!-- update summary  -->
+<script>
+    function updateSummary() {
+        fetch('/summary')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('withID').textContent = data.Person_with_ID;
+                document.getElementById('withoutID').textContent = data.Person_without_ID;
+                document.getElementById('totalPersons').textContent = data.Total_Objects;
+                document.getElementById("bike").textContent = data.Bike;
+                document.getElementById("car").textContent = data.Car;
+
+            })
+            .catch(error => console.error('Error fetching summary:', error));
+    }
+</script>
+
+</body>
+
+</html>
