@@ -26,9 +26,9 @@ CLASS_NAMES = {
 }
 
 # Load the trained YOLO model (update with your actual model path if different)
-# model = YOLO("custom_yolo_v3.pt")
-model = YOLO("custom_yolov11l.pt")  ## change model here
-
+model = YOLO("custom_yolo_v3.pt")
+# model = YOLO("custom_yolov11l.pt")  ## change model here
+# model = YOLO("model101.pt")
 # Function to save detection data to a CSV file
 def save_csv():
     df = pd.DataFrame(csv_data)
@@ -44,13 +44,13 @@ def save_csv():
 def tracking_loop():
     global is_running, csv_data, seen_ids
 
-    # cap = cv2.VideoCapture(0)  # Start webcam
+    cap = cv2.VideoCapture(0)  # Start webcam
     # print("📹 Webcam started...")
 
  
-    video_path = "idvideo2.mp4"  # Replace with your actual path
-    cap = cv2.VideoCapture(video_path)
-    print("🎥 Video file opened...")
+    # video_path = "idvideo2.mp4"  # Replace with your actual path
+    # cap = cv2.VideoCapture(video_path)
+    # print("🎥 Video file opened...")
 
 
     while is_running and cap.isOpened():
